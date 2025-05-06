@@ -33,27 +33,10 @@ public class Memory {
     }
 
     /*
-     * Realiza uma operação de memória
-     */
-    public boolean doOperation(String operation, String pageId) {
-        switch (operation.toUpperCase()) {
-            case "L":
-                return read(pageId);
-
-            case "E":
-                return write(pageId);
-
-            default:
-                return read(pageId);
-        }
-    }
-
-    /*
     * 
     */
-    private boolean allocate(Frame frame, boolean isModified) {
+    private boolean allocate(Frame frame) {
         if (!isFull()) {
-            frame.setModified(isModified);
             this.framesMap.put(frame.getPageId(), frame);
             size++;
             return true;
@@ -65,40 +48,17 @@ public class Memory {
     /*
     * 
     */
-    public boolean allocate(String pageId, boolean isModified) {
-        return this.allocate(new Frame(pageId), isModified);
+    public boolean allocate(String pageId) {
+        return this.allocate(new Frame(pageId));
     }
 
     /*
     * 
     */
     public boolean deallocate(String pageId) {
-        if (isInMemory(pageId)) {
+        if (isAllocated(pageId)) {
             this.framesMap.remove(pageId);
             this.size--;
-            return true;
-        }
-
-        return false;
-    }
-
-    /*
-     * 
-     */
-    private boolean read(String pageId) {
-        if (isInMemory(pageId)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /*
-     * 
-     */
-    private boolean write(String pageId) {
-        if (isInMemory(pageId)) {
-            getFrame(pageId).setModified(true);
             return true;
         }
 
@@ -109,7 +69,7 @@ public class Memory {
      * Return
      */
     public FrameData getFrameData(String pageId) {
-        if (isInMemory(pageId))
+        if (isAllocated(pageId))
             return new FrameData(this.framesMap.get(pageId));
 
         return null;
@@ -125,18 +85,8 @@ public class Memory {
     /*
      * Return
      */
-    public boolean isInMemory(String pageId) {
+    public boolean isAllocated(String pageId) {
         return framesMap.containsKey(pageId);
-    }
-
-    /*
-     * Return
-     */
-    private Frame getFrame(String pageId) {
-        if (isInMemory(pageId))
-            return this.framesMap.get(pageId);
-
-        return null;
     }
 
 }

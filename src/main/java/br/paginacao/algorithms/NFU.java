@@ -57,34 +57,22 @@ public class NFU implements IAlgorithm {
         Memory memory = new Memory(args.getMemorySize(), args.getMemoryInitialState());
         ArrayList<PageData> nfuPagesList = initMemory(args.getMemoryInitialState());
         ArrayList<String> pagesIdQueue = args.getPagesIdsQueue();
-        ArrayList<String> operationQueue = args.getOperationsQueue();
         ArrayList<String> steps = new ArrayList<>();
         int faults = 0;
         long startTime = System.currentTimeMillis();
         long duration;
 
-        if (pagesIdQueue.size() != operationQueue.size()) {
-            ErrorLogs.pagesQueueSizeDifferFromActionsQueueSize("NFU");
-            return null;
-        }
-
         while (pagesIdQueue.size() > 0) {
             String nextPageId = pagesIdQueue.removeFirst();
-            String operation = operationQueue.removeFirst();
-            boolean operationSuccessful = memory.doOperation(operation, nextPageId);
-            boolean modified = operation.toUpperCase() == "E";
             String pageToDeallocate = "";
 
-            if (operationSuccessful) {
-                // Page in memory
+            if (memory.isAllocated(nextPageId)) {
                 incrementRefValue(nextPageId, nfuPagesList);
                 steps.add("A página " + nextPageId + " está na memória.");
             } else {
-                // Page fault
                 faults++;
                 if (!memory.isFull()) {
                     // Page not in memory, but memory is not full. Allocate page
-
                     steps.add("A página " + nextPageId + " foi inserida em uma posição livre da memória.");
                 } else {
                     // Page not in memory and memory is full. Swap pages
@@ -93,7 +81,7 @@ public class NFU implements IAlgorithm {
                     steps.add("A página " + nextPageId + " foi inserida no lugar da página " + pageToDeallocate
                             + ".");
                 }
-                memory.allocate(nextPageId, modified);
+                memory.allocate(nextPageId);
                 nfuPagesList.add(new PageData(nextPageId));
             }
 

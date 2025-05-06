@@ -1,7 +1,6 @@
 package br.paginacao.algorithms;
 
 import java.util.ArrayList;
-import br.paginacao.common.ErrorLogs;
 import br.paginacao.common.Memory;
 import br.paginacao.common.SimulationArgs;
 import br.paginacao.interfaces.IAlgorithm;
@@ -47,7 +46,6 @@ public class Clock implements IAlgorithm {
         Memory memory = new Memory(args.getMemorySize(), args.getMemoryInitialState());
         ArrayList<PageData> pagesCache = initCache(args.getMemoryInitialState());
         ArrayList<String> pagesIdQueue = args.getPagesIdsQueue();
-        ArrayList<String> operationQueue = args.getOperationsQueue();
         ArrayList<String> steps = new ArrayList<>();
         int maxTime = args.getClockInterruptTime();
         int currentTime = 0;
@@ -55,25 +53,15 @@ public class Clock implements IAlgorithm {
         long duration;
         int faults = 0;
 
-        if (pagesIdQueue.size() != operationQueue.size()) {
-            ErrorLogs.pagesQueueSizeDifferFromActionsQueueSize("Clock");
-            return null;
-        }
-
         while (pagesIdQueue.size() > 0) {
             String nextPageId = pagesIdQueue.removeFirst();
             PageData pageToDeallocate = null;
-            String operation = operationQueue.removeFirst();
-            boolean operationSuccessful = memory.doOperation(operation, nextPageId);
-            boolean modified = operation.toUpperCase() == "E";
             currentTime += 1;
 
-            if (operationSuccessful) {
-                // Page in memory
+            if (memory.isAllocated(nextPageId)) {
                 updateRef(nextPageId, true, pagesCache);
                 steps.add("A página " + nextPageId + " está na memória.");
             } else {
-                // Page fault
                 faults++;
                 if (!memory.isFull()) {
                     // Page not in memory, but memory is not full. Allocate page
@@ -86,10 +74,10 @@ public class Clock implements IAlgorithm {
                             + ".");
                 }
                 pagesCache.add(new PageData(nextPageId));
-                memory.allocate(nextPageId, modified);
+                memory.allocate(nextPageId);
             }
 
-            if (currentTime >= maxTime) {
+            if (maxTime != 0 && currentTime >= maxTime) {
                 resetReferencesBits(pagesCache);
                 currentTime = 0;
                 steps.add("Bit R resetado.");

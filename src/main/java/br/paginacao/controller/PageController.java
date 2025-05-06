@@ -4,11 +4,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -29,19 +30,7 @@ public class PageController {
     private TextField tfMemorySize;
 
     @FXML
-    private TextField tfPagesQueueSize;
-
-    @FXML
-    private TextField tfPagesCount;
-
-    @FXML
-    private TextField tfPagesIds;
-
-    @FXML
     private TextField tfPagesIdQueue;
-
-    @FXML
-    private TextField tfOperationsQueue;
 
     @FXML
     private TextField tfMemoryinitialState;
@@ -85,8 +74,6 @@ public class PageController {
     @FXML
     private NumberAxis yAxis;
 
-    private SimulationArgs args;
-
     private final String[] colorList = { "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728" };
 
     @FXML
@@ -95,20 +82,6 @@ public class PageController {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 tfMemorySize.setText(formatToNumber(oldValue, newValue));
-            }
-        });
-
-        tfPagesQueueSize.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                tfPagesQueueSize.setText(formatToNumber(oldValue, newValue));
-            }
-        });
-
-        tfPagesCount.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                tfPagesCount.setText(formatToNumber(oldValue, newValue));
             }
         });
 
@@ -164,14 +137,9 @@ public class PageController {
         }
 
         if (args != null) {
-            this.args = args;
             tfMemorySize.setText("" + args.getMemorySize());
-            tfPagesQueueSize.setText("" + args.getPagesQueueSize());
-            tfPagesCount.setText("" + args.getPagesCount());
-            tfPagesIds.setText(String.join("-", args.getPagesIdsList()));
-            tfPagesIdQueue.setText(String.join("-", args.getPagesIdsQueue()));
-            tfOperationsQueue.setText(String.join("-", args.getOperationsQueue()));
-            tfMemoryinitialState.setText(String.join("-", args.getMemoryInitialState()));
+            tfPagesIdQueue.setText(String.join(" ", args.getPagesIdsQueue()));
+            tfMemoryinitialState.setText(String.join(" ", args.getMemoryInitialState()));
             tfClockInterruptionCount.setText("" + args.getClockInterruptTime());
         }
     }
@@ -189,28 +157,29 @@ public class PageController {
     }
 
     public void simulate() {
-        if (this.args == null) {
-            System.out.println("Parâmetos de simulação vaizos");
+        SimulationArgs args = getSimulationArgs();
+
+        if (handleErros(args)) {
             return;
         }
 
         FIFO fifo = new FIFO();
-        SimulationResults fifoResults = fifo.run(this.args);
+        SimulationResults fifoResults = fifo.run(args);
         lbFifoFaultsResult.setText("" + fifoResults.faults());
         lbFifoDurationResult.setText("" + fifoResults.duration() + " mls");
 
         LRU lru = new LRU();
-        SimulationResults lruResults = lru.run(this.args);
+        SimulationResults lruResults = lru.run(args);
         lbLruFaultsResult.setText("" + lruResults.faults());
         lbLruDurationResult.setText("" + lruResults.duration() + " mls");
 
         NFU nfu = new NFU();
-        SimulationResults nfuResults = nfu.run(this.args);
+        SimulationResults nfuResults = nfu.run(args);
         lbNfuFaultsResult.setText("" + nfuResults.faults());
         lbNfuDurationResult.setText("" + nfuResults.duration() + " mls");
 
         Clock clock = new Clock();
-        SimulationResults clockResults = clock.run(this.args);
+        SimulationResults clockResults = clock.run(args);
         lbClockFaultsResult.setText("" + clockResults.faults());
         lbClockDurationResult.setText("" + clockResults.duration() + " mls");
 
@@ -242,6 +211,48 @@ public class PageController {
             String cor = colorList[i % colorList.length];
             data.getNode().setStyle("-fx-background-color: " + cor + ";");
         }
+    }
 
+    private void showErrorMsg(String title, String msg) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
+
+    private SimulationArgs getSimulationArgs() {
+        String memorySizeStr = tfMemorySize.getText();
+        String clockTimerStr = tfClockInterruptionCount.getText();
+        String pagesQueue = tfPagesIdQueue.getText();
+        String memoryInitalState = tfMemoryinitialState.getText();
+        int memorySize = memorySizeStr.equals("") ? 0 : Integer.parseInt(memorySizeStr);
+        int clockTimer = clockTimerStr.equals("") ? 0 : Integer.parseInt(clockTimerStr);
+
+        return new SimulationArgs(memorySize, clockTimer, pagesQueue, memoryInitalState);
+    }
+
+    private boolean handleErros(SimulationArgs args) {
+        if (args == null) {
+            System.out.println("Parâmetos de simulação vaizos");
+            return true;
+        }
+
+        if (args.getMemorySize() < args.getMemoryInitialState().size()) {
+            showErrorMsg("Erro", "O estado inicial da mémoria é maior que a capacidade da memória");
+            return true;
+        }
+
+        if (args.getMemorySize() == 0) {
+            showErrorMsg("Erro", "Informe o tamanho da memória");
+            return true;
+        }
+
+        if (args.getPagesIdsQueue().size() == 0) {
+            showErrorMsg("Erro", "Informe pelo menos uma página");
+            return true;
+        }
+
+        return false;
     }
 }
