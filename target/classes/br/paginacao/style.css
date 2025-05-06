@@ -1,0 +1,51 @@
+
+* {
+    -fx-text-fill: #fffffdD9; 
+}
+
+.main-wrapper {
+    -fx-background-color: #000000;
+}
+
+.center-container {
+    -fx-background-color: #1c1c1c;
+    -fx-background-radius: 15px; 
+}
+
+.algorithm-result-wrapper {
+    -fx-background-color: #333333; 
+    -fx-border-radius: 6; 
+    -fx-padding: 10; 
+    -fx-background-radius: 6; 
+}
+
+/* DATA INPUT */
+.label {
+    -fx-font-family: 'Roboto', sans-serif;
+    -fx-text-fill: #d6d6d6;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+}
+
+.text-field {
+    -fx-font-size: 11pt;
+    -fx-background-color: transparent;
+    -fx-border-color: #3E3E3E; 
+    -fx-border-width: 1px; 
+    -fx-border-radius: 6px;
+    -fx-border-style: solid; 
+    -fx-font-weight: 500;
+}
+
+/* BUILD IN */
+.scroll-pane {
+    -fx-background-color: #2f2f2f;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: #2f2f2f;
+}
+
+.context-menu {
+    -fx-background-color: #2f2f2f;
+}
