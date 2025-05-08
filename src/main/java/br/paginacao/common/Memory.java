@@ -3,7 +3,7 @@ package br.paginacao.common;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import br.paginacao.erros.BiggerSizeThanExpectedError;
+import br.paginacao.exceptions.NotExpectedSizeException;
 import br.paginacao.records.FrameData;
 
 public class Memory {
@@ -14,7 +14,7 @@ public class Memory {
     // TODO: Revisar esse throw de erro
     public Memory(int maxSize, ArrayList<String> initialPages) {
         if (initialPages.size() > maxSize) {
-            throw new BiggerSizeThanExpectedError(
+            throw new NotExpectedSizeException(
                     "O tamanho do estado inicial da memória é maior que o tamanho máximo da memória princiapl");
         }
 

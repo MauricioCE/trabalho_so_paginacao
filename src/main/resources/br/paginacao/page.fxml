@@ -64,6 +64,23 @@
                      <TextField fx:id="tfClockInterruptionCount" prefHeight="30.0" prefWidth="112.0" styleClass="input-text-field" HBox.hgrow="ALWAYS" />
                   </children>
                </HBox>
+               <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                  <children>
+                     <Label alignment="CENTER_RIGHT" prefWidth="185.0" styleClass="input-label" text="Nº páginas:">
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                        <font>
+                           <Font size="10.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="lbPagesCount" prefHeight="28.0" prefWidth="78.0" text="0">
+                        <font>
+                           <Font size="10.0" />
+                        </font>
+                     </Label>
+                  </children>
+               </HBox>
 
                <HBox spacing="20.0" style="-fx-alignment: center;" VBox.vgrow="ALWAYS">
                   <children>
@@ -77,9 +94,12 @@
                      </Button>
                      <MenuButton mnemonicParsing="false" style="-fx-background-color: transparent; -fx-border-color: #3E3E3E; -fx-border-image-width: 1; -fx-border-style: dashed; -fx-border-radius: 6;" text="Testes predefinidos">
                         <items>
-                           <MenuItem mnemonicParsing="false" onAction="#handleCase1" text="Caso 1" />
-                           <MenuItem mnemonicParsing="false" onAction="#handleCase2" text="Caso 2" />
-                           <MenuItem mnemonicParsing="false" onAction="#handleCase3" text="Caso 3" />
+                           <MenuItem mnemonicParsing="false" onAction="#handleCase1" text="Caso 1 - Comparativo Site" />
+                           <MenuItem mnemonicParsing="false" onAction="#handleCase2" text="Caso 2 - Comparativo Site" />
+                           <MenuItem mnemonicParsing="false" onAction="#handleCase3" text="Caso 3 - Comparativo Site" />
+                           <MenuItem mnemonicParsing="false" onAction="#handleCase4" text="Aleatório - 1.000 páginas" />
+                           <MenuItem mnemonicParsing="false" onAction="#handleCase5" text="Aleatório - 10.00 páginas" />
+                           <MenuItem mnemonicParsing="false" onAction="#handleCase6" text="Aleatório - 100.00 páginas" />
                         </items>
                         <padding>
                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -100,7 +120,7 @@
                </Separator>
                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                   <children>
-                     <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="151.0" spacing="5.0" styleClass="algorithm-result-wrapper">
+                     <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="180.0" spacing="5.0" styleClass="algorithm-result-wrapper">
                         <children>
                            <Label text="FIFO">
                               <font>
@@ -113,13 +133,13 @@
                            <HBox prefHeight="100.0" prefWidth="200.0">
                               <children>
                                  <Label prefHeight="20.0" prefWidth="70.0" text="Faults:" />
-                                 <Label fx:id="lbFifoFaultsResult" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="40.0" text="0" />
+                                 <Label fx:id="lbFifoFaultsResult" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="82.0" text="0" />
                               </children>
                            </HBox>
                            <HBox layoutX="15.0" layoutY="42.0" prefHeight="100.0" prefWidth="200.0">
                               <children>
                                  <Label prefHeight="20.0" prefWidth="70.0" text="Duração:" />
-                                 <Label fx:id="lbFifoDurationResult" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="40.0" text="0" />
+                                 <Label fx:id="lbFifoDurationResult" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="82.0" text="0" />
                               </children>
                            </HBox>
                         </children>
@@ -127,7 +147,7 @@
                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                         </padding>
                      </VBox>
-                     <VBox alignment="TOP_CENTER" layoutX="364.0" layoutY="10.0" prefHeight="100.0" prefWidth="151.0" spacing="5.0" styleClass="algorithm-result-wrapper">
+                     <VBox alignment="TOP_CENTER" layoutX="364.0" layoutY="10.0" prefHeight="100.0" prefWidth="180.0" spacing="5.0" styleClass="algorithm-result-wrapper">
                         <children>
                            <Label text="LRU">
                               <font>
@@ -140,13 +160,13 @@
                            <HBox prefHeight="100.0" prefWidth="200.0">
                               <children>
                                  <Label prefHeight="20.0" prefWidth="70.0" text="Faults:" />
-                                 <Label fx:id="lbLruFaultsResult" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="40.0" text="0" />
+                                 <Label fx:id="lbLruFaultsResult" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="82.0" text="0" />
                               </children>
                            </HBox>
                            <HBox layoutX="15.0" layoutY="42.0" prefHeight="100.0" prefWidth="200.0">
                               <children>
                                  <Label prefHeight="20.0" prefWidth="70.0" text="Duração:" />
-                                 <Label fx:id="lbLruDurationResult" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="40.0" text="0" />
+                                 <Label fx:id="lbLruDurationResult" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="82.0" text="0" />
                               </children>
                            </HBox>
                         </children>
@@ -154,7 +174,7 @@
                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                         </padding>
                      </VBox>
-                     <VBox alignment="TOP_CENTER" layoutX="450.0" layoutY="10.0" prefHeight="100.0" prefWidth="151.0" spacing="5.0" styleClass="algorithm-result-wrapper">
+                     <VBox alignment="TOP_CENTER" layoutX="450.0" layoutY="10.0" prefHeight="100.0" prefWidth="180.0" spacing="5.0" styleClass="algorithm-result-wrapper">
                         <children>
                            <Label text="NFU">
                               <font>
@@ -167,13 +187,13 @@
                            <HBox prefHeight="100.0" prefWidth="200.0">
                               <children>
                                  <Label prefHeight="20.0" prefWidth="70.0" text="Faults:" />
-                                 <Label fx:id="lbNfuFaultsResult" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="40.0" text="0" />
+                                 <Label fx:id="lbNfuFaultsResult" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="82.0" text="0" />
                               </children>
                            </HBox>
                            <HBox layoutX="15.0" layoutY="42.0" prefHeight="100.0" prefWidth="200.0">
                               <children>
                                  <Label prefHeight="20.0" prefWidth="70.0" text="Duração:" />
-                                 <Label fx:id="lbNfuDurationResult" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="40.0" text="0" />
+                                 <Label fx:id="lbNfuDurationResult" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="82.0" text="0" />
                               </children>
                            </HBox>
                         </children>
@@ -181,7 +201,7 @@
                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                         </padding>
                      </VBox>
-                     <VBox alignment="TOP_CENTER" layoutX="536.0" layoutY="10.0" prefHeight="100.0" prefWidth="151.0" spacing="5.0" styleClass="algorithm-result-wrapper">
+                     <VBox alignment="TOP_CENTER" layoutX="536.0" layoutY="10.0" prefHeight="100.0" prefWidth="180.0" spacing="5.0" styleClass="algorithm-result-wrapper">
                         <children>
                            <Label text="Segunda Chance">
                               <font>
@@ -194,13 +214,13 @@
                            <HBox prefHeight="100.0" prefWidth="200.0">
                               <children>
                                  <Label prefHeight="20.0" prefWidth="70.0" text="Faults:" />
-                                 <Label fx:id="lbClockFaultsResult" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="40.0" text="0" />
+                                 <Label fx:id="lbClockFaultsResult" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="82.0" text="0" />
                               </children>
                            </HBox>
                            <HBox layoutX="15.0" layoutY="42.0" prefHeight="100.0" prefWidth="200.0">
                               <children>
                                  <Label prefHeight="20.0" prefWidth="70.0" text="Duração:" />
-                                 <Label fx:id="lbClockDurationResult" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="40.0" text="0" />
+                                 <Label fx:id="lbClockDurationResult" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="82.0" text="0" />
                               </children>
                            </HBox>
                         </children>

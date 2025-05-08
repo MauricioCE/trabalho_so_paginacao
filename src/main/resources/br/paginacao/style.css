@@ -47,5 +47,29 @@
 }
 
 .context-menu {
-    -fx-background-color: #2f2f2f;
+    -fx-background-color: #4a4a4a;
 }
+
+/* CHART */
+
+.chart-plot-background {
+    -fx-background-color: transparent; 
+}
+
+.axis-label {
+    -fx-text-fill: #fffffdD9;
+    -fx-font-size: 11pt;
+}
+
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+
+.chart-horizontal-grid-lines {
+    -fx-stroke-dash-array: null; /* Ou -fx-stroke-dash-array: ; */
+}
+
+.chart-horizontal-grid-lines {
+    -fx-stroke: rgb(110, 110, 110); /* Altere para a cor desejada */
+}
+

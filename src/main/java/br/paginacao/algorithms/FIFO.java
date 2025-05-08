@@ -1,7 +1,6 @@
 package br.paginacao.algorithms;
 
 import java.util.ArrayList;
-import br.paginacao.common.ErrorLogs;
 import br.paginacao.common.Memory;
 import br.paginacao.common.SimulationArgs;
 import br.paginacao.interfaces.IAlgorithm;
@@ -41,6 +40,7 @@ public class FIFO implements IAlgorithm {
             }
         }
 
+        // duration = System.currentTimeMillis() - startTime + ((int) (faults * 0.2));
         duration = System.currentTimeMillis() - startTime;
 
         return new SimulationResults(faults, duration, steps);

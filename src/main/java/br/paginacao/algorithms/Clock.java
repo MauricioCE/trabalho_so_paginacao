@@ -84,6 +84,7 @@ public class Clock implements IAlgorithm {
             }
         }
 
+        // duration = System.currentTimeMillis() - startTime + ((int) (faults * 0.2));
         duration = System.currentTimeMillis() - startTime;
 
         return new SimulationResults(faults, duration, steps);
